@@ -1,0 +1,10 @@
+FROM codellama:7b
+
+# Load your fine-tuned LoRA adapter
+ADAPTER ./lora_codet5_adapter
+
+# Set generation parameters
+PARAMETER temperature 0.2
+
+# Optional: system message (prompt prefix)
+SYSTEM You are a helpful assistant that translates natural language to SQL.

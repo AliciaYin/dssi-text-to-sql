@@ -1,0 +1,46 @@
+model_name_or_path: Salesforce/codet5p-220m
+tokenizer_name: Salesforce/codet5p-220m
+
+max_train_samples: 1000
+num_train_epochs: 1
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+max_seq_length: 128
+learning_rate: 0.001
+weight_decay: 0.01
+max_grad_norm: 1.0
+
+output_dir: ./output/company-sql-assistant
+save_strategy: "epoch"
+save_total_limit: 1
+save_only_adapter: true
+logging_steps: 10
+
+peft:
+  use_peft: true
+  method: lora
+  lora_config:
+    r: 4
+    lora_alpha: 16
+    target_modules: ["q", "v"]
+    lora_dropout: 0.05
+    bias: none
+    task_type: SEQ_2_SEQ_LM
+
+device: mps
+fp16: false
+bf16: false
+use_mps: true
+
+gradient_checkpointing: true
+torch_compile: true
+low_cpu_mem_usage: true
+
+dataset_name: spider
+dataset_split: train[:1000]
+text_column: question
+label_column: query
+
+deployment:
+  format: ollama
+  name: company-sql-assistant
